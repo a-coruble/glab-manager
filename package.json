@@ -1,40 +1,76 @@
 {
-  "name": "hello-world-svelte",
-  "displayName": "hello-world-svelte",
-  "description": "A hello world sample extension to demonstrate using Svelte with the Webview UI Toolkit for VS Code.",
+  "name": "glab-manager",
+  "displayName": "Gitlab Manager - Projects / Issues / Merge Requests",
+  "description": "A small extension to manage your Gitlab Projects, Issues and Merge Requests directly from within VSCode, and not only the ones from the current opened repository, but for everything you have access to.",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.84.0"
   },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "hello-world.showHelloWorld",
-        "title": "Hello World (Svelte): Show"
+        "command": "glab-manager.setGitlabHostUrl",
+        "title": "Glab Manager: Set Host URL"
+      },
+      {
+        "command": "glab-manager.setGitlabAccessToken",
+        "title": "Glab Manager: Set Access Token"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Glab Manager",
+      "properties": {
+        "glab-manager.hostUrl": {
+          "type": "string",
+          "default": "https://gitlab.com",
+          "description": "URL of the Gitlab instance that you'd like to manage through the Glab Manager extension."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "glab-manager",
+          "title": "glab-manager",
+          "icon": "src/assets/gitlab-logo-white.svg"
+        }
+      ]
+    },
+    "views": {
+      "glab-manager": [
+        {
+          "id": "projectsView",
+          "name": "Your Gitlab Projects"
+        }
+      ]
+    }
   },
   "scripts": {
-    "install:all": "pnpm install && cd webview-ui && pnpm install",
-    "start:webview": "cd webview-ui && pnpm dev",
-    "build:webview": "cd webview-ui && pnpm build",
-    "vscode:prepublish": "pnpm compile",
-    "compile": "pnpm build:webview && tsc -p ./",
-    "watch": "pnpm build:webview && tsc -watch -p ./",
-    "pretest": "pnpm compile && pnpm lint",
-    "lint": "eslint src --ext ts"
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.3",
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.46.0",
-    "@typescript-eslint/eslint-plugin": "^4.14.1",
-    "@typescript-eslint/parser": "^4.14.1",
-    "eslint": "^7.19.0",
-    "glob": "^7.1.6",
-    "prettier": "^2.2.1",
-    "typescript": "^4.1.3",
-    "vscode-test": "^1.5.0"
+    "@types/mocha": "^10.0.3",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.84.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "@vscode/test-electron": "^2.3.6",
+    "eslint": "^8.52.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
   }
 }
